@@ -1,0 +1,26 @@
+.profile__occupation {
+  margin: 0;
+  padding: 0;
+  margin-top: 16px;
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #ffffff;
+  text-overflow: ellipsis;
+  max-width: 336px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 576px) {
+  .profile__occupation {
+    text-align: center;
+    font-size: 14px;
+    line-height: 17px;
+    margin-top: 8px;
+    margin-right: 44px;
+    max-width: 210px;
+  }
+}

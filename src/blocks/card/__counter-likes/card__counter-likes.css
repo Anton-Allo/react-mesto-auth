@@ -1,0 +1,18 @@
+.card__counter-likes {
+  position: absolute;
+  right: 25px;
+  bottom: 17px;
+  left: 230px;
+  top: 26px;
+  width: 10px;
+  height: 13px;
+  padding: 0;
+  margin: 3px 0 0;
+  font-family: "Inter", Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: black;
+}
