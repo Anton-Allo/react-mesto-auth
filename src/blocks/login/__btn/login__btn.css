@@ -10,7 +10,7 @@
   padding: 0;
 }
 
-@media screen and (min-width: 321px) {
+@media screen and (max-width: 321px) {
   .login__btn {
     max-width: 260px;
     height: 46px;

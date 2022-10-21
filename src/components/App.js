@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { api } from '../utils/Api.js';
-import * as auth from '../utils/Auth';
+import * as auth from '../utils/auth';
 import '../index.css';
 import Header from './Header.js';
 import Main from './Main.js';
@@ -30,7 +30,7 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [cards, setCards] = React.useState([]);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [emailName, setEmailName] = React.useState(null);
+  const [emailName, setEmailName] = React.useState('');
   const [popupImage, setPopupImage] = React.useState('');
   const [popupTitle, setPopupTitle] = React.useState('');
   const [infoTooltip, setInfoTooltip] = React.useState(false);
@@ -47,7 +47,7 @@ function App() {
       .catch(() => {
         setPopupImage(reject);
         setPopupTitle('Что-то пошло не так! Попробуйте ещё раз.');
-        handleInfoTooltip();
+        handleOpenInfoTooltip();
       });
   }
 
@@ -63,14 +63,14 @@ function App() {
         setPopupImage(reject);
         setPopupTitle('Что-то пошло не так! Попробуйте ещё раз.');
       })
-      .finally(handleInfoTooltip);
+      .finally(handleOpenInfoTooltip);
   }
   // Сохраняем токен в локальную память
   React.useEffect(() => {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
       auth
-        .getToken(jwt)
+        .checkToken(jwt)
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
@@ -84,36 +84,41 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    if (isLoggedIn === true) {
+    if (isLoggedIn) {
       navigate('/');
     }
   }, [isLoggedIn, navigate]);
 
   React.useEffect(() => {
-    api
-      .getCards()
-      .then((data) => {
-        setCards(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (isLoggedIn) {
+      api
+        .getCards()
+        .then((data) => {
+          setCards(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isLoggedIn]);
 
   React.useEffect(() => {
-    api
-      .getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (isLoggedIn) {
+      api
+        .getUserInfo()
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isLoggedIn]);
+
   // Выход из профиля и удаление токена из локальной памяти
   function onSignOut() {
     setIsLoggedIn(false);
-    setEmailName(null);
+    setEmailName('');
     navigate('/sign-in');
     localStorage.removeItem('jwt');
   }
@@ -146,7 +151,7 @@ function App() {
     setSelectedCard(card);
   }
 
-  function handleInfoTooltip() {
+  function handleOpenInfoTooltip() {
     setInfoTooltip(true);
   }
 
@@ -297,8 +302,6 @@ function App() {
         />
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-
-        <ConfirmPopupDelete onClose={closeAllPopups} />
 
         <InfoTooltip
           image={popupImage}

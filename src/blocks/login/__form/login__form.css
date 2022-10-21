@@ -4,7 +4,7 @@
   align-items: center;
 }
 
-@media screen and (min-width: 321px) {
+@media screen and (max-width: 321px) {
   .login__form {
     max-width: 260px;
   }

@@ -27,7 +27,7 @@ export function loginUser(email, password) {
   }).then(checkResponse);
 }
 
-export function getToken(jwt) {
+export function checkToken(jwt) {
   return fetch(`${baseUrl}/users/me`, {
     method: 'GET',
     headers: {

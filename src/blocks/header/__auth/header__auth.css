@@ -1,9 +1,9 @@
 .header__auth {
   display: flex;
-  align-items: center;
+  justify-content: center;
 }
 
-@media screen and (max-width: 475px) {
+@media screen and (max-width: 321px) {
   .header__auth {
     flex-direction: column;
   }
