@@ -1,8 +1,6 @@
 .header__logo {
   margin: 0;
   margin-bottom: 41px;
-  display: flex;
-  justify-content: flex-start;
 }
 
 @media screen and (max-width: 321px) {

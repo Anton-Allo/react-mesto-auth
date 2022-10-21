@@ -1,0 +1,20 @@
+.login__btn {
+  width: 358px;
+  height: 50px;
+  margin: 216px auto 0;
+  background-color: #ffffff;
+  border-radius: 2px;
+  border: none;
+  font-size: 18px;
+  line-height: 22px;
+  padding: 0;
+}
+
+@media screen and (min-width: 321px) {
+  .login__btn {
+    max-width: 260px;
+    height: 46px;
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
