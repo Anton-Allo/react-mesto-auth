@@ -1,0 +1,14 @@
+.header__exit {
+  margin: 0;
+  padding: 0;
+  color: #a9a9a9;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+  text-align: right;
+}
+
+.header__exit:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}

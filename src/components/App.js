@@ -35,36 +35,6 @@ function App() {
   const [popupTitle, setPopupTitle] = React.useState('');
   const [infoTooltip, setInfoTooltip] = React.useState(false);
 
-  function onLogin(email, password) {
-    auth
-      .loginUser(email, password)
-      .then((res) => {
-        localStorage.setItem('jwt', res.token);
-        setIsLoggedIn(true);
-        setEmailName(email);
-        navigate('/');
-      })
-      .catch(() => {
-        setPopupImage(reject);
-        setPopupTitle('Что-то пошло не так! Попробуйте ещё раз.');
-        handleOpenInfoTooltip();
-      });
-  }
-
-  function onRegister(email, password) {
-    auth
-      .registerUser(email, password)
-      .then(() => {
-        setPopupImage(resolve);
-        setPopupTitle('Вы успешно зарегистрировались!');
-        navigate('/sign-in');
-      })
-      .catch(() => {
-        setPopupImage(reject);
-        setPopupTitle('Что-то пошло не так! Попробуйте ещё раз.');
-      })
-      .finally(handleOpenInfoTooltip);
-  }
   // Сохраняем токен в локальную память
   React.useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -114,6 +84,37 @@ function App() {
         });
     }
   }, [isLoggedIn]);
+
+  function onLogin(email, password) {
+    auth
+      .loginUser(email, password)
+      .then((res) => {
+        localStorage.setItem('jwt', res.token);
+        setIsLoggedIn(true);
+        setEmailName(email);
+        navigate('/');
+      })
+      .catch(() => {
+        setPopupImage(reject);
+        setPopupTitle('Что-то пошло не так! Попробуйте ещё раз.');
+        handleOpenInfoTooltip();
+      });
+  }
+
+  function onRegister(email, password) {
+    auth
+      .registerUser(email, password)
+      .then(() => {
+        setPopupImage(resolve);
+        setPopupTitle('Вы успешно зарегистрировались!');
+        navigate('/sign-in');
+      })
+      .catch(() => {
+        setPopupImage(reject);
+        setPopupTitle('Что-то пошло не так! Попробуйте ещё раз.');
+      })
+      .finally(handleOpenInfoTooltip);
+  }
 
   // Выход из профиля и удаление токена из локальной памяти
   function onSignOut() {
@@ -230,38 +231,22 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
+        <Header
+          email={emailName}
+          isLoggedIn={isLoggedIn}
+          onSignOut={onSignOut}
+        />
         <Routes>
-          <Route
-            path="/sign-in"
-            element={
-              <>
-                <Header title="Регистрация" route="/sign-up" />
-                <Login onLogin={onLogin} />
-              </>
-            }
-          />
-
+          <Route path="/sign-in" element={<Login onLogin={onLogin} />} />
           <Route
             path="/sign-up"
-            element={
-              <>
-                <Header title="Войти" route="/sign-in" />
-                <Register onRegister={onRegister} />
-              </>
-            }
+            element={<Register onRegister={onRegister} />}
           />
-
           <Route
             exact
             path="/"
             element={
               <>
-                <Header
-                  title="Выйти"
-                  mail={emailName}
-                  onClick={onSignOut}
-                  route=""
-                />
                 <ProtectedRoute
                   component={Main}
                   isLogged={isLoggedIn}
@@ -302,6 +287,8 @@ function App() {
         />
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+
+        <ConfirmPopupDelete onClose={closeAllPopups} />
 
         <InfoTooltip
           image={popupImage}
